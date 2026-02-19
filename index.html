@@ -2,81 +2,111 @@
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <title>Tỏ tình nè</title>
-
+    <title>Bấm Bấm Vui Vẻ</title>
     <style>
       body {
-        background: linear-gradient(to right, pink, #ffb6c1);
-        text-align: center;
-        margin-top: 120px;
-        font-family: Arial;
+        margin: 0;
         overflow: hidden;
+        background: linear-gradient(45deg, #1e1e2f, #2a2a40);
+        font-family: Arial, sans-serif;
+        color: white;
+        text-align: center;
       }
 
       h1 {
-        color: #d6336c;
+        margin-top: 20px;
       }
 
-      button {
-        background: #ff4d6d;
-        color: white;
-        padding: 14px 28px;
-        border: none;
-        border-radius: 25px;
-        font-size: 18px;
-        cursor: pointer;
-      }
-
-      button:hover {
-        background: #e63950;
-      }
-
-      /* Trái tim */
-      .heart {
+      .circle {
         position: absolute;
-        color: red;
-        font-size: 24px;
-        animation: fly 3s linear forwards;
+        border-radius: 50%;
+        pointer-events: none;
+        animation: pop 0.6s ease-out forwards;
       }
 
-      @keyframes fly {
+      @keyframes pop {
         0% {
-          transform: translateY(0) scale(1);
+          transform: scale(0);
           opacity: 1;
         }
         100% {
-          transform: translateY(-300px) scale(2);
+          transform: scale(2);
           opacity: 0;
         }
       }
-    </style>
-  </head>
 
-  <body>
-    <h1>Mày làm người yêu tao nha? 💖</h1>
-
-    <button onclick="boom()">Đồng ý 😘</button>
-
-    <script>
-      function boom() {
-        for (let i = 0; i < 40; i++) {
-          createHeart();
-        }
+      .score {
+        position: fixed;
+        top: 10px;
+        right: 20px;
+        font-size: 20px;
       }
 
-      function createHeart() {
-        const heart = document.createElement("div");
-        heart.className = "heart";
-        heart.innerHTML = "❤️";
+      .btn {
+        padding: 10px 20px;
+        font-size: 18px;
+        border: none;
+        border-radius: 10px;
+        background: hotpink;
+        color: white;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: 0.2s;
+      }
 
-        heart.style.left = Math.random() * window.innerWidth + "px";
-        heart.style.top = window.innerHeight + "px";
+      .btn:hover {
+        transform: scale(1.1);
+        background: deeppink;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>vỹ trẻ trâu ấn đi 😆</h1>
+    <button class="btn" onclick="rain()">Mưa màu</button>
+    <div class="score">Điểm: <span id="score">0</span></div>
 
-        document.body.appendChild(heart);
+    <script>
+      let score = 0;
+
+      function randomColor() {
+        return `hsl(${Math.random() * 360}, 80%, 60%)`;
+      }
+
+      function createCircle(x, y) {
+        const circle = document.createElement("div");
+        circle.classList.add("circle");
+
+        let size = Math.random() * 50 + 20;
+
+        circle.style.width = size + "px";
+        circle.style.height = size + "px";
+        circle.style.left = x - size / 2 + "px";
+        circle.style.top = y - size / 2 + "px";
+        circle.style.background = randomColor();
+
+        document.body.appendChild(circle);
 
         setTimeout(() => {
-          heart.remove();
-        }, 3000);
+          circle.remove();
+        }, 600);
+
+        score++;
+        document.getElementById("score").textContent = score;
+      }
+
+      document.addEventListener("click", function (e) {
+        createCircle(e.clientX, e.clientY);
+      });
+
+      function rain() {
+        for (let i = 0; i < 30; i++) {
+          setTimeout(() => {
+            createCircle(
+              Math.random() * window.innerWidth,
+              Math.random() * window.innerHeight,
+            );
+          }, i * 50);
+        }
       }
     </script>
   </body>
